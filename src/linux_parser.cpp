@@ -35,13 +35,14 @@ string LinuxParser::OperatingSystem() {
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::Kernel() {
-  string os, kernel;
+  string os, version, kernel;                                        // string initialization
   string line;
-  std::ifstream stream(kProcDirectory + kVersionFilename);
-  if (stream.is_open()) {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> os >> kernel;
+  // create input file stream to access file
+  std::ifstream stream(kProcDirectory + kVersionFilename);  // defined in .h file
+  if (stream.is_open()) {                                   // confirm file is open
+    std::getline(stream, line);                             // get new line from stream and assign to 'line'
+    std::istringstream linestream(line);                    // convert to input string stream 'linestream'
+    linestream >> os >> version >> kernel;                  // shift three times to get 'kernel'
   }
   return kernel;
 }
