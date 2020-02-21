@@ -22,6 +22,12 @@ class System {
  private:
   Processor cpu_ = {};
   std::vector<Process> processes_ = {};
+  // Define variables that don't change as private members
+  // kernel & OS to prevent multiple function calls
+  std::string Kernel_ = {"Kernel_TBD"};
+  std::string OS_ = {"OS_TBD"};
+  
+
 };
 
 #endif
