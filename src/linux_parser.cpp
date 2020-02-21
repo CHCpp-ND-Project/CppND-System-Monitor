@@ -15,16 +15,17 @@ string LinuxParser::OperatingSystem() {
   string line;
   string key;
   string value;
-  std::ifstream filestream(kOSPath);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
+  std::ifstream filestream(kOSPath);                          // Create input file stream
+  if (filestream.is_open()) {                                 // if file stream is open...
+    while (std::getline(filestream, line)) {                  // while there are lines left to get...
+      // process line to be able to stringstream more readily
       std::replace(line.begin(), line.end(), ' ', '_');
       std::replace(line.begin(), line.end(), '=', ' ');
       std::replace(line.begin(), line.end(), '"', ' ');
-      std::istringstream linestream(line);
-      while (linestream >> key >> value) {
-        if (key == "PRETTY_NAME") {
-          std::replace(value.begin(), value.end(), '_', ' ');
+      std::istringstream linestream(line);                    // create input stringstream
+      while (linestream >> key >> value) {                    // extract key and value as first two elements from iss
+        if (key == "PRETTY_NAME") {                           // check if key matches what we are looking for
+          std::replace(value.begin(), value.end(), '_', ' '); // return to human readible format
           return value;
         }
       }
@@ -48,9 +49,11 @@ string LinuxParser::Kernel() {
 }
 
 // BONUS: Update this to use std::filesystem
+// this function is to pull out all process id (integral values in /proc/)
+// map to processes
 vector<int> LinuxParser::Pids() {
   vector<int> pids;
-  DIR* directory = opendir(kProcDirectory.c_str());
+  DIR* directory = opendir(kProcDirectory.c_str());         // from dirent.h
   struct dirent* file;
   while ((file = readdir(directory)) != nullptr) {
     // Is this a directory?
