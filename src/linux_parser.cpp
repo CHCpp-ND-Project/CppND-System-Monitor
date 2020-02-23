@@ -73,8 +73,20 @@ vector<int> LinuxParser::Pids() {
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { return 0.0; }
 
-// TODO: Read and return the system uptime
-long LinuxParser::UpTime() { return 0; }
+// DONE: Read and return the system uptime
+long LinuxParser::UpTime() {
+  string sysUpTime, sysIdleTime;
+  string line;
+  long upTime;
+  std::ifstream filestream(kProcDirectory + kUptimeFilename);                  // Create input file stream
+  if (filestream.is_open()) {                                 // if file stream is open...
+    std::getline(filestream, line);                    // while there are lines left to get...
+    std::istringstream linestream(line);                    // create input stringstream
+    linestream >> sysUpTime >> sysIdleTime;
+    upTime = std::stol(sysUpTime);
+  }
+  return upTime;
+}
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() { return 0; }
@@ -93,10 +105,27 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() { return 500; }
 
 // TODO: Read and return the number of running processes
-int LinuxParser::RunningProcesses() { return 0; }
+// save off TotalProcesses
+int LinuxParser::RunningProcesses() { 
+  string key, value;
+  string line;
+  long upTime;
+  std::ifstream filestream(kProcDirectory + kStatFilename);                  // Create input file stream
+  if (filestream.is_open()) {
+    while(std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key >> value) {     //extract key and value as first two elements from iss
+        if (key == "procs_running") {
+          return std::stoi(value);
+        }
+      }
+    }
+  }
+return 0;
+}
 
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
