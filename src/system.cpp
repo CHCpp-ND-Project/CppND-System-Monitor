@@ -38,11 +38,16 @@ std::string System::OperatingSystem() {
     return OS_; 
 }
 
-// TODO: Return the number of processes actively running on the system
-int System::RunningProcesses() { return LinuxParser::RunningProcesses(); }
+// DONE: Return the number of processes actively running on the system
+int System::RunningProcesses() { 
+    vector<int> SysProc = LinuxParser::RunningProcesses();
+    sysProcesses_ = SysProc[1];
+    return SysProc[0];
+}
 
-// TODO: Return the total number of processes on the system
-int System::TotalProcesses() { return LinuxParser::TotalProcesses(); }
+// DONE, combined with Running Processes to avoid open/close of file
+// Return the total number of processes on the system
+int System::TotalProcesses() { return sysProcesses_; }
 
-// TODO: Return the number of seconds since the system started running
-long int System::UpTime() { return LinuxParser::UpTime(); }
+// Return the number of seconds since the system started running from proc/uptime/
+long System::UpTime() { return LinuxParser::UpTime(); }

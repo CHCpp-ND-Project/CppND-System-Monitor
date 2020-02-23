@@ -112,14 +112,19 @@ int LinuxParser::TotalProcesses() { return 500; }
 int LinuxParser::RunningProcesses() { 
   string key, value;
   string line;
-  long upTime;
+  int procRunning{-1}, proc{-1};
   std::ifstream filestream(kProcDirectory + kStatFilename);                  // Create input file stream
   if (filestream.is_open()) {
     while(std::getline(filestream, line)) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {     //extract key and value as first two elements from iss
-        if (key == "procs_running") {
-          return std::stoi(value);
+        if (key == "processes") {
+          proc std::stoi(value);
+        } else if (key == "procs_running") {
+          procRunning std::stoi(value);
+        }
+        if (proc != -1 && procRunning != -1) {
+          return proc, procRunning;
         }
       }
     }
