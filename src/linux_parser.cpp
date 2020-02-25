@@ -70,7 +70,7 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// TODO: Read and return the system memory utilization
+// DONE: Read and return the system memory utilization as a percentage of free remaining
 float LinuxParser::MemoryUtilization() {
   string line;
   string key, value;
@@ -96,7 +96,8 @@ float LinuxParser::MemoryUtilization() {
       }
     } while ((std::getline(filestream, line)) || clear < 3);
   }
-  return (memTotal-memFree)/memTotal; }
+  return (memTotal-memFree)/memTotal; 
+}
 
 // DONE: Read and return the system uptime
 long LinuxParser::UpTime() {
@@ -129,10 +130,10 @@ long LinuxParser::IdleJiffies() { return 0; }
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
-// Done, see RunningProcesses() to avoid functon call: Read and return the total number of processes
+// DONE: see RunningProcesses() to avoid functon call: Read and return the total number of processes
 int LinuxParser::TotalProcesses() { return 500; }
 
-// Done: Read and return the number of running processes
+// DONE: Read and return the number of running processes
 // save off TotalProcesses
 vector<int> LinuxParser::RunningProcesses() { 
   string key, value;
