@@ -71,7 +71,32 @@ vector<int> LinuxParser::Pids() {
 }
 
 // TODO: Read and return the system memory utilization
-float LinuxParser::MemoryUtilization() { return 0.0; }
+float LinuxParser::MemoryUtilization() {
+  string line;
+  string key, value;
+  float memTotal{0}, memFree{0}, memAvailable{0}, buffers{0}; 
+  std::ifstream filestream(kProcDirectory + kMeminfoFilename);
+  if (filestream.is_open()) {
+    int clear = 0;
+    do {
+      std::istringstream linestream(line);
+      linestream >> key >> value;
+      if (key == "MemTotal:") {
+        memTotal = std::stoi(value);
+        clear ++;
+      } else if (key == "MemFree:") {
+        memFree = std::stoi(value);
+        clear ++;
+      } else if (key == "MemAvailable:") {
+        memAvailable = std::stoi(value);
+        clear ++;
+      } else if (key == "Buffers:") {
+        buffers = std::stoi(value);
+        clear ++;
+      }
+    } while ((std::getline(filestream, line)) || clear < 3);
+  }
+  return (memTotal-memFree)/memTotal; }
 
 // DONE: Read and return the system uptime
 long LinuxParser::UpTime() {
@@ -104,10 +129,10 @@ long LinuxParser::IdleJiffies() { return 0; }
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
-// TODO: Read and return the total number of processes
+// Done, see RunningProcesses() to avoid functon call: Read and return the total number of processes
 int LinuxParser::TotalProcesses() { return 500; }
 
-// TODO: Read and return the number of running processes
+// Done: Read and return the number of running processes
 // save off TotalProcesses
 vector<int> LinuxParser::RunningProcesses() { 
   string key, value;
