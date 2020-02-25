@@ -1,12 +1,16 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
+#include <fstream>
+#include <string>
 
 class Processor {
  public:
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization();  // DONE: See src/processor.cpp
 
-  // TODO: Declare any necessary private members
+  // DONE: Declare any necessary private members
  private:
+    float prevIdle_{0};     // Instead of using time, track previous values
+    float prevCpuTotal_{0};
 };
 
 #endif
