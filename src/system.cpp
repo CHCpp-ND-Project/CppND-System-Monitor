@@ -27,15 +27,15 @@ vector<Process>& System::Processes() {
     }
 
     for (int pid : newProcesses) {
-        bool found = false;
+
         // create an iterator borrowed from https://thispointer.com/c-how-to-find-an-element-in-vector-and-get-its-index/
-        if(std::find(lastProcesses.begin(), lastProcesses.end(), pid) != lastProcesses.end())  //has to create an iterator every time
-            found = true; // skip this PID
-        else
+        if(std::find(lastProcesses.begin(), lastProcesses.end(), pid) == lastProcesses.end())  //has to create an iterator every time
+
 	        //Process pid_new = Process(pid);
             processes_.emplace_back(Process(pid));
     }
-    std::cout<<processes_.size();
+    // debug int size  = processes_.size();
+    std::sort(processes_.begin(), processes_.end());
     return processes_; 
 }
 
