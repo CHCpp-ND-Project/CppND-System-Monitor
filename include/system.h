@@ -26,7 +26,7 @@ class System {
   // kernel & OS to prevent multiple function calls
   std::string Kernel_ = {"Kernel_TBD"};
   std::string OS_ = {"OS_TBD"};
-  
+  int sysProcesses_ = {0};
 
 };
 
