@@ -10,7 +10,7 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-// DONE: An example of how to read data from the filesystem
+// An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
   string line;
   string key;
@@ -34,7 +34,7 @@ string LinuxParser::OperatingSystem() {
   return value;
 }
 
-// DONE: An example of how to read data from the filesystem
+// An example of how to read data from the filesystem
 string LinuxParser::Kernel() {
   string os, version, kernel;                                        // string initialization
   string line;
@@ -70,7 +70,7 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// DONE: Read and return the system memory utilization as a percentage of free remaining
+// Read and return the system memory utilization as a percentage of free remaining
 float LinuxParser::MemoryUtilization() {
   string line;
   string key, value;
@@ -99,7 +99,7 @@ float LinuxParser::MemoryUtilization() {
   return (memTotal-memFree)/memTotal; 
 }
 
-// DONE: Read and return the system uptime
+// Read and return the system uptime
 long LinuxParser::UpTime() {
   string sysUpTime, sysIdleTime;
   string line;
@@ -130,10 +130,10 @@ long LinuxParser::IdleJiffies() { return 0; }
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
-// DONE: see RunningProcesses() to avoid functon call: Read and return the total number of processes
+// see RunningProcesses() to avoid functon call: Read and return the total number of processes
 int LinuxParser::TotalProcesses() { return 500; }
 
-// DONE: Read and return the number of running processes
+// Read and return the number of running processes
 // save off TotalProcesses
 vector<int> LinuxParser::RunningProcesses() { 
   string key, value;
@@ -160,8 +160,7 @@ vector<int> LinuxParser::RunningProcesses() {
 return procReturn;
 }
 
-// TODO: Read and return the command associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
+// Read and return the command associated with a process
 string LinuxParser::Command(int pid) {
   std::string currentPID = "/" + std::to_string(pid) + "/";
   std::string line;
@@ -222,9 +221,22 @@ string LinuxParser::User(int pid) {
   return string(); 
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
+// Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
-
-  return 0;
+  std::string currentPID = "/" + std::to_string(pid) + "/";
+  std::string line;
+  std::string key, value;
+  long pidTime{0};
+  std::ifstream stream(kProcDirectory + currentPID + kStatFilename);  // defined in .h file
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      for (int i=0; i<22; i++) {
+        linestream >> key;
+      }
+      linestream >> value;
+      pidTime = std::stol(value)/sysconf(_SC_CLK_TCK);
+    }
+  }
+  return pidTime; 
 }
