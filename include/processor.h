@@ -5,9 +5,9 @@
 
 class Processor {
  public:
-  float Utilization();  // DONE: See src/processor.cpp
+  float Utilization();  // See src/processor.cpp
 
-  // DONE: Declare any necessary private members
+  // Declare any necessary private members
  private:
     float prevIdle_{0};     // Instead of using time, track previous values
     float prevCpuTotal_{0};

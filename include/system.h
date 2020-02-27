@@ -27,7 +27,7 @@ class System {
   std::string Kernel_ = {"Kernel_TBD"};
   std::string OS_ = {"OS_TBD"};
   int sysProcesses_ = {0};
-
+  long sysUpTime_ = {0};
 };
 
 #endif
