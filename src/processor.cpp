@@ -1,7 +1,7 @@
 #include "processor.h"
 #include "linux_parser.h"
 
-// DONE: Return the aggregate CPU utilization
+// Return the aggregate CPU utilization
 float Processor::Utilization() {
     std::string key, cpuUser, cpuNice, cpuSystem, cpuIdle, cpuIOWait, cpuIrq, cpuSoftIrq, cpuSteal, cpuGuest, cpuGuestNice;
     float cpuUserF, cpuNiceF, cpuSystemF, cpuIdleF, cpuIOWaitF, cpuIrqF, cpuSoftIrqF, cpuStealF, cpuGuestF, cpuGuestNiceF;
