@@ -157,7 +157,7 @@ vector<int> LinuxParser::RunningProcesses() {
       }
     }
   }
-return procReturn;
+  return procReturn;
 }
 
 // Read and return the command associated with a process
@@ -180,9 +180,23 @@ string LinuxParser::Command(int pid) {
   return string(); 
 }
 
-// TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+// Read and return the memory used by a process
+string LinuxParser::Ram(int pid) {
+  std::string currentPID = "/" + std::to_string(pid) + "/";
+  std::string line;
+  std::string key, value;
+  std::ifstream stream(kProcDirectory + currentPID + kStatusFilename);  // defined in .h file
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      linestream >> key >> value;
+      if (key == "VmSize:") {
+        return std::to_string(std::stoi(value)/1000);
+      }
+    }
+  }
+  return std::string{"0"};
+}
 
 // Read and return the user ID associated with a process by taking userNumber string
 string LinuxParser::Uid(std::string userNum) {
