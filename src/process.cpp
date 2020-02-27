@@ -14,20 +14,28 @@ using std::vector;
 // Process Constructor
 Process::Process(int pid){
     pid_ = pid;
+    cpu_ = 1;
 }
 // Return this process's ID
 int Process::Pid() { return pid_; }
+
+// set private member cpu_
+void Process::setProcCPUUtilization(float cpu) {
+    cpu_ = cpu;
+}
 
 // Return this process's CPU utilization
 float Process::CpuUtilization() {
     vector<string> pT = LinuxParser::CpuUtilization(pid_);
     // procTimes vector 0:utime, 1:stime, 2:cutime, 3:cstime, 4:startTime
-    float total_time = std::stoi(pT[0]) + std::stoi(pT[1]) +
-                        std::stoi(pT[2]) + std::stoi(pT[3]);
+    float total_time = std::stof(pT[0]) + std::stof(pT[1]) +
+                        std::stof(pT[2]) + std::stof(pT[3]);
     // elapsed time seconds = uptime - (starttime / Hertz)
-    float seconds = LinuxParser::UpTime() - (std::stoi(pT[3])/sysconf(_SC_CLK_TCK));
-    cpu_ = (total_time/sysconf(_SC_CLK_TCK))/seconds;
-    return cpu_;
+    float freq = (float) sysconf(_SC_CLK_TCK);
+    float seconds = (float) LinuxParser::UpTime() - (std::stof(pT[4])/ freq);
+    float cpu = (total_time/freq)/seconds;
+    Process::setProcCPUUtilization(cpu);
+    return cpu;
 }
 
 // Return the command that generated this process

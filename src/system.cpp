@@ -7,6 +7,7 @@
 #include "process.h"
 #include "processor.h"
 #include "system.h"
+
 #include <iostream>
 using std::set;
 using std::size_t;
@@ -19,19 +20,16 @@ Processor& System::Cpu() { return cpu_; }
 // Return a container composed of the system's processes sorted by cpu utilization
 vector<Process>& System::Processes() { 
     std::vector<int> newProcesses = LinuxParser::Pids();
-    std::vector<int> lastProcesses;
-    for (Process proc : processes_) {
-        lastProcesses.emplace_back(proc.Pid());
-    }
+    std::vector<Process> tempProc;
 
     for (int pid : newProcesses) {
-        // create an iterator borrowed from https://thispointer.com/c-how-to-find-an-element-in-vector-and-get-its-index/
-        if(std::find(lastProcesses.begin(), lastProcesses.end(), pid) == lastProcesses.end())  //has to create an iterator every time
-	        //Process pid_new = Process(pid);
-            processes_.emplace_back(Process(pid));
+        Process pidProc = Process(pid);
+        pidProc.Process::CpuUtilization();
+        tempProc.emplace_back(pidProc);
     }
-    // debug int size  = processes_.size();
-    std::sort(processes_.begin(), processes_.end());
+
+    std::sort(tempProc.begin(), tempProc.end());
+    processes_ = tempProc;
     return processes_; 
 }
 
