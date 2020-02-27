@@ -19,18 +19,14 @@ Processor& System::Cpu() { return cpu_; }
 // Return a container composed of the system's processes sorted by cpu utilization
 vector<Process>& System::Processes() { 
     std::vector<int> newProcesses = LinuxParser::Pids();
-    
     std::vector<int> lastProcesses;
-
     for (Process proc : processes_) {
         lastProcesses.emplace_back(proc.Pid());
     }
 
     for (int pid : newProcesses) {
-
         // create an iterator borrowed from https://thispointer.com/c-how-to-find-an-element-in-vector-and-get-its-index/
         if(std::find(lastProcesses.begin(), lastProcesses.end(), pid) == lastProcesses.end())  //has to create an iterator every time
-
 	        //Process pid_new = Process(pid);
             processes_.emplace_back(Process(pid));
     }
@@ -61,8 +57,8 @@ std::string System::OperatingSystem() {
 // Returns the number of processes actively running on the system
 int System::RunningProcesses() { 
     vector<int> SysProc = LinuxParser::RunningProcesses();
-    sysProcesses_ = SysProc[1];
-    return SysProc[0];
+    sysProcesses_ = SysProc[0];
+    return SysProc[1];
 }
 
 // Return the total number of processes on the system
@@ -70,4 +66,7 @@ int System::RunningProcesses() {
 int System::TotalProcesses() { return sysProcesses_; }
 
 // Returns the number of seconds since the system started running from proc/uptime/
-long System::UpTime() { return LinuxParser::UpTime(); }
+long System::UpTime() {
+    sysUpTime_ = LinuxParser::UpTime(); 
+    return sysUpTime_;
+}
