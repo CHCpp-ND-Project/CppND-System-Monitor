@@ -74,7 +74,7 @@ vector<int> LinuxParser::Pids() {
 float LinuxParser::MemoryUtilization() {
   string line;
   string key, value;
-  float memTotal{0}, memFree{0}, memAvailable{0}, buffers{0}; 
+  float memTotal{0}, memFree{0}; // , memAvailable{0}, buffers{0}
   std::ifstream filestream(kProcDirectory + kMeminfoFilename);
   if (filestream.is_open()) {
     int clear = 0;
@@ -87,13 +87,13 @@ float LinuxParser::MemoryUtilization() {
       } else if (key == "MemFree:") {
         memFree = std::stoi(value);
         clear ++;
-      } else if (key == "MemAvailable:") {
+      } /*else if (key == "MemAvailable:") {
         memAvailable = std::stoi(value);
         clear ++;
       } else if (key == "Buffers:") {
         buffers = std::stoi(value);
         clear ++;
-      }
+      }*/
     } while ((std::getline(filestream, line)) || clear < 3);
   }
   return (memTotal-memFree)/memTotal; 
@@ -134,7 +134,6 @@ vector<string> LinuxParser::CpuUtilization(int pid) {
   std::string line;
   std::string nullValue;
   std::string utime{0}, stime{0}, cutime{0}, cstime{0}, starttime{0};
-  float total_time{0}, seconds{0};
 
   std::ifstream stream(kProcDirectory + currentPID + kStatFilename);  // defined in .h file
   if (stream.is_open()) {

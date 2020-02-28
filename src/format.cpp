@@ -4,7 +4,7 @@
 
 using std::string;
 
-// DONE: this helper function converts seconds in long int format to HH:MM:SS string format 
+// this helper function converts seconds in long int format to HH:MM:SS string format 
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
 string Format::ElapsedTime(long seconds) { 

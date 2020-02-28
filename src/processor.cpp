@@ -4,7 +4,7 @@
 // Return the aggregate CPU utilization
 float Processor::Utilization() {
     std::string key, cpuUser, cpuNice, cpuSystem, cpuIdle, cpuIOWait, cpuIrq, cpuSoftIrq, cpuSteal, cpuGuest, cpuGuestNice;
-    float cpuUserF, cpuNiceF, cpuSystemF, cpuIdleF, cpuIOWaitF, cpuIrqF, cpuSoftIrqF, cpuStealF, cpuGuestF, cpuGuestNiceF;
+    float cpuUserF, cpuNiceF, cpuSystemF, cpuIdleF, cpuIOWaitF, cpuIrqF, cpuSoftIrqF, cpuStealF; //, cpuGuestF, cpuGuestNiceF;
     float CPU_Percentage{0};
     std::string line;
     std::ifstream filestream(LinuxParser::kProcDirectory + LinuxParser::kStatFilename);                  // Create input file stream
